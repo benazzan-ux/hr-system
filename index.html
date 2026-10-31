@@ -64,8 +64,8 @@ label>*{margin-top:4px;color:var(--ink);font-size:15px}
 <dialog id="dlg"></dialog>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {getFirestore,collection,doc,getDoc,addDoc,updateDoc,onSnapshot,query,orderBy,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,collection,doc,getDoc,addDoc,setDoc,updateDoc,writeBatch,onSnapshot,query,orderBy,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const app=initializeApp({
   apiKey:"AIzaSyCjpHMArz4z8a9v6klmAHCKxhlCX10wc9s",
@@ -79,10 +79,10 @@ const auth=getAuth(app),db=getFirestore(app);
 
 const ST=['applied','screening','interview','offer','hired','rejected'];
 const L={
-ar:{app:'نظام التوظيف',dash:'لوحة المتابعة',pipe:'مسار المرشحين',jobs:'الوظائف',applied:'تقديم الطلب',screening:'الفرز',interview:'المقابلة',offer:'العرض',hired:'تم التعيين',rejected:'مرفوض',all:'كل الوظائف',addC:'إضافة مرشح',addJ:'إضافة وظيفة',name:'الاسم',job:'الوظيفة',stage:'المرحلة',rating:'التقييم',notes:'ملاحظات الفريق',save:'حفظ',close:'إغلاق',cands:'المرشحون',open:'مفتوحة',closed:'مغلقة',total:'إجمالي المرشحين',openJobs:'وظائف مفتوحة',inProc:'قيد الإجراء',hiredN:'تم تعيينهم',empty:'لا يوجد مرشحون هنا',lang:'English',title:'المسمى الوظيفي',dept:'القسم',status:'الحالة',toggle:'فتح / إغلاق',funnel:'توزيع المرشحين حسب المرحلة',email:'البريد الإلكتروني',pass:'كلمة المرور',in:'تسجيل الدخول',out:'تسجيل الخروج',bad:'تعذر تسجيل الدخول. تأكد من البريد وكلمة المرور.',noAccess:'حسابك غير مفعّل في النظام. اطلب من مدير النظام إضافتك.',loading:'جارٍ التحميل...',admin:'مدير النظام',recruiter:'مسؤول توظيف',manager:'مدير معني',fail:'تعذر الحفظ. ليست لديك صلاحية أو انقطع الاتصال.'},
-en:{app:'Recruitment',dash:'Dashboard',pipe:'Pipeline',jobs:'Jobs',applied:'Applied',screening:'Screening',interview:'Interview',offer:'Offer',hired:'Hired',rejected:'Rejected',all:'All jobs',addC:'Add candidate',addJ:'Add job',name:'Name',job:'Job',stage:'Stage',rating:'Rating',notes:'Team notes',save:'Save',close:'Close',cands:'Candidates',open:'Open',closed:'Closed',total:'Total candidates',openJobs:'Open jobs',inProc:'In process',hiredN:'Hired',empty:'No candidates here',lang:'العربية',title:'Job title',dept:'Department',status:'Status',toggle:'Open / close',funnel:'Candidates by stage',email:'Email',pass:'Password',in:'Sign in',out:'Sign out',bad:'Sign-in failed. Check your email and password.',noAccess:'Your account is not set up yet. Ask an admin to add you.',loading:'Loading...',admin:'Admin',recruiter:'Recruiter',manager:'Hiring manager',fail:'Could not save. You may lack permission or the connection dropped.'}};
+ar:{app:'نظام التوظيف',dash:'لوحة المتابعة',pipe:'مسار المرشحين',jobs:'الوظائف',applied:'تقديم الطلب',screening:'الفرز',interview:'المقابلة',offer:'العرض',hired:'تم التعيين',rejected:'مرفوض',all:'كل الوظائف',addC:'إضافة مرشح',addJ:'إضافة وظيفة',name:'الاسم',job:'الوظيفة',stage:'المرحلة',rating:'التقييم',notes:'ملاحظات الفريق',save:'حفظ',close:'إغلاق',cands:'المرشحون',open:'مفتوحة',closed:'مغلقة',total:'إجمالي المرشحين',openJobs:'وظائف مفتوحة',inProc:'قيد الإجراء',hiredN:'تم تعيينهم',empty:'لا يوجد مرشحون هنا',lang:'English',title:'المسمى الوظيفي',dept:'القسم',status:'الحالة',toggle:'فتح / إغلاق',funnel:'توزيع المرشحين حسب المرحلة',email:'البريد الإلكتروني',pass:'كلمة المرور',in:'تسجيل الدخول',out:'تسجيل الخروج',bad:'تعذر تسجيل الدخول. تأكد من البريد وكلمة المرور.',noAccess:'حسابك غير مفعّل في النظام. اطلب من مدير النظام إضافتك.',loading:'جارٍ التحميل...',admin:'مدير النظام',recruiter:'مسؤول توظيف',manager:'مدير معني',pending:'بانتظار الموافقة',waitMsg:'تم إنشاء حسابك وهو بانتظار موافقة مدير النظام.',team:'الفريق',roleL:'الدور',up:'إنشاء حساب جديد',exists:'هذا البريد مسجّل مسبقًا.',weak:'كلمة المرور قصيرة، استخدم 6 أحرف على الأقل.',fail:'تعذر الحفظ. ليست لديك صلاحية أو انقطع الاتصال.'},
+en:{app:'Recruitment',dash:'Dashboard',pipe:'Pipeline',jobs:'Jobs',applied:'Applied',screening:'Screening',interview:'Interview',offer:'Offer',hired:'Hired',rejected:'Rejected',all:'All jobs',addC:'Add candidate',addJ:'Add job',name:'Name',job:'Job',stage:'Stage',rating:'Rating',notes:'Team notes',save:'Save',close:'Close',cands:'Candidates',open:'Open',closed:'Closed',total:'Total candidates',openJobs:'Open jobs',inProc:'In process',hiredN:'Hired',empty:'No candidates here',lang:'العربية',title:'Job title',dept:'Department',status:'Status',toggle:'Open / close',funnel:'Candidates by stage',email:'Email',pass:'Password',in:'Sign in',out:'Sign out',bad:'Sign-in failed. Check your email and password.',noAccess:'Your account is not set up yet. Ask an admin to add you.',loading:'Loading...',admin:'Admin',recruiter:'Recruiter',manager:'Hiring manager',pending:'Pending approval',waitMsg:'Your account was created and is waiting for admin approval.',team:'Team',roleL:'Role',up:'Create account',exists:'This email is already registered.',weak:'Password is too short. Use at least 6 characters.',fail:'Could not save. You may lack permission or the connection dropped.'}};
 
-let D={lang:'ar',tab:'pipe',jf:'all',jobs:[],cands:[],user:null,role:null,ready:false,msg:''};
+let D={lang:'ar',tab:'pipe',jf:'all',jobs:[],cands:[],user:null,role:null,ready:false,msg:'',mode:'in',users:[],signing:false};
 try{const l=localStorage.getItem('hr-lang');if(l)D.lang=l}catch(x){}
 let unsubs=[];
 const t=k=>L[D.lang][k]||k;
@@ -94,22 +94,25 @@ const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
 const canEdit=()=>D.role=='admin'||D.role=='recruiter';
 const fail=()=>{D.msg=t('fail');render()};
 
-onAuthStateChanged(auth,async u=>{
+const STAFF=['admin','recruiter','manager'];
+async function enter(u){
  unsubs.forEach(f=>f());unsubs=[];
- D.user=u;D.role=null;D.jobs=[];D.cands=[];D.msg='';
+ D.user=u;D.role=null;D.jobs=[];D.cands=[];D.users=[];D.msg='';
  if(u){
   try{const s=await getDoc(doc(db,'users',u.uid));D.role=s.exists()?s.data().role:'none'}catch(x){D.role='none'}
-  if(D.role!='none'){
+  if(STAFF.includes(D.role)){
+   if(D.role=='admin')unsubs.push(onSnapshot(collection(db,'users'),s=>{D.users=s.docs.map(d=>({id:d.id,...d.data()}));render()},()=>{}));
    const onErr=er=>{D.msg=er.message;render()};
    unsubs.push(onSnapshot(query(collection(db,'jobs'),orderBy('createdAt')),s=>{D.jobs=s.docs.map(d=>({id:d.id,...d.data()}));render()},onErr));
    unsubs.push(onSnapshot(query(collection(db,'candidates'),orderBy('createdAt')),s=>{D.cands=s.docs.map(d=>({id:d.id,...d.data()}));render()},onErr));
   }
  }
  D.ready=true;render();
-});
+}
+onAuthStateChanged(auth,u=>{if(!D.signing)enter(u)});
 
 function hdr(nav){
- const tabs=nav?['dash','pipe','jobs'].map(k=>`<button class="tab" role="tab" aria-selected="${D.tab==k}" data-act="tab" data-v="${k}">${t(k)}</button>`).join(''):'';
+ const tabs=nav?(D.role=='admin'?['dash','pipe','jobs','team']:['dash','pipe','jobs']).map(k=>`<button class="tab" role="tab" aria-selected="${D.tab==k}" data-act="tab" data-v="${k}">${t(k)}</button>`).join(''):'';
  const who=nav?`<span>${t(D.role)}</span><button class="btn" data-act="out">${t('out')}</button>`:'';
  return `<header><h1>${t('app')}</h1><nav role="tablist">${tabs}</nav>${who}<button class="btn" data-act="lang">${t('lang')}</button></header>`;
 }
@@ -117,9 +120,9 @@ function render(){
  const h=document.documentElement;h.lang=D.lang;h.dir=D.lang=='ar'?'rtl':'ltr';
  let out;
  if(!D.ready)out=`${hdr(false)}<main>${t('loading')}</main>`;
- else if(!D.user)out=`${hdr(false)}<main><form class="panel login" id="lf"><label>${t('email')}<input id="em" type="email" autocomplete="username" required></label><label>${t('pass')}<input id="pw" type="password" autocomplete="current-password" required></label>${D.msg?`<p class="err" role="alert">${e(D.msg)}</p>`:''}<button class="btn pri" type="submit">${t('in')}</button></form></main>`;
- else if(D.role=='none')out=`${hdr(true)}<main><div class="panel"><p>${t('noAccess')}</p></div></main>`;
- else out=`${hdr(true)}<main>${D.msg?`<div class="panel err" role="alert">${e(D.msg)}</div>`:''}${D.tab=='dash'?dash():D.tab=='jobs'?jobsV():pipe()}</main>`;
+ else if(!D.user)out=`${hdr(false)}<main><form class="panel login" id="lf"><label>${t('email')}<input id="em" type="email" autocomplete="username" required></label><label>${t('pass')}<input id="pw" type="password" autocomplete="current-password" required></label>${D.msg?`<p class="err" role="alert">${e(D.msg)}</p>`:''}<button class="btn pri" type="submit">${D.mode=='up'?t('up'):t('in')}</button> <button class="btn" type="button" data-act="mode">${D.mode=='up'?t('in'):t('up')}</button></form></main>`;
+ else if(!STAFF.includes(D.role))out=`${hdr(true)}<main><div class="panel"><p>${D.role=='pending'?t('waitMsg'):t('noAccess')}</p></div></main>`;
+ else out=`${hdr(true)}<main>${D.msg?`<div class="panel err" role="alert">${e(D.msg)}</div>`:''}${D.tab=='dash'?dash():D.tab=='jobs'?jobsV():D.tab=='team'&&D.role=='admin'?teamV():pipe()}</main>`;
  $('app').innerHTML=out;
 }
 function pipe(){
@@ -142,6 +145,11 @@ function jobsV(){
  const rows=D.jobs.map(j=>`<tr><td>${e(j.t[D.lang])}</td><td>${e(j.d[D.lang])}</td><td>${D.cands.filter(c=>c.job==j.id).length}</td><td>${j.open?t('open'):t('closed')}</td><td>${ed?`<button class="btn" data-act="tgl" data-id="${j.id}">${t('toggle')}</button>`:''}</td></tr>`).join('');
  return `<div class="bar"><span class="sp"></span>${ed?`<button class="btn pri" data-act="newJ">${t('addJ')}</button>`:''}</div><div class="wrap"><table class="list"><tr><th>${t('title')}</th><th>${t('dept')}</th><th>${t('cands')}</th><th>${t('status')}</th><th></th></tr>${rows}</table></div>`;
 }
+function teamV(){
+ const ro=['pending','manager','recruiter','admin'];
+ const rows=D.users.map(u=>`<tr><td>${e(u.email||u.id)}</td><td><select data-uid="${u.id}" ${u.id==D.user.uid?'disabled':''}>${ro.map(r=>`<option value="${r}" ${u.role==r?'selected':''}>${t(r)}</option>`).join('')}</select></td></tr>`).join('');
+ return `<div class="wrap"><table class="list"><tr><th>${t('email')}</th><th>${t('roleL')}</th></tr>${rows}</table></div>`;
+}
 function candDlg(id){
  const c=id?D.cands.find(x=>x.id==id):{id:'',name:'',job:D.jobs[0].id,stage:'applied',rating:0,notes:''};
  const ed=canEdit()?'':'disabled';
@@ -158,13 +166,22 @@ function jobDlg(){
 
 document.addEventListener('submit',async ev=>{
  if(ev.target.id!='lf')return;ev.preventDefault();
- try{await signInWithEmailAndPassword(auth,$('em').value.trim(),$('pw').value)}catch(x){D.msg=t('bad');render()}
+ const em=$('em').value.trim(),pw=$('pw').value;
+ if(D.mode!='up'){try{await signInWithEmailAndPassword(auth,em,pw)}catch(x){D.msg=t('bad');render()}return}
+ D.signing=true;
+ try{
+  const c=await createUserWithEmailAndPassword(auth,em,pw),ref=doc(db,'users',c.user.uid),base={email:em,createdAt:serverTimestamp()};
+  try{const b=writeBatch(db);b.set(doc(db,'settings','init'),{by:c.user.uid,at:serverTimestamp()});b.set(ref,{...base,role:'admin'});await b.commit()}
+  catch(x){await setDoc(ref,{...base,role:'pending'})}
+  D.signing=false;await enter(c.user);
+ }catch(x){D.signing=false;D.msg=x.code=='auth/email-already-in-use'?t('exists'):x.code=='auth/weak-password'?t('weak'):t('bad');render()}
 });
 document.addEventListener('click',async ev=>{
  const b=ev.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,id=b.dataset.id;
  try{
   if(a=='tab'){D.tab=b.dataset.v}
   else if(a=='lang'){D.lang=D.lang=='ar'?'en':'ar';try{localStorage.setItem('hr-lang',D.lang)}catch(x){}}
+  else if(a=='mode'){D.mode=D.mode=='up'?'in':'up'}
   else if(a=='out'){await signOut(auth);return}
   else if(a=='edit'){return candDlg(id)}
   else if(a=='newC'){return candDlg('')}
@@ -186,7 +203,7 @@ document.addEventListener('click',async ev=>{
   D.msg='';render();
  }catch(x){fail()}
 });
-document.addEventListener('change',ev=>{if(ev.target.id=='jf'){D.jf=ev.target.value;render()}});
+document.addEventListener('change',ev=>{const u=ev.target.dataset.uid;if(u){updateDoc(doc(db,'users',u),{role:ev.target.value}).catch(fail);return}if(ev.target.id=='jf'){D.jf=ev.target.value;render()}});
 document.addEventListener('keydown',ev=>{if(ev.key=='Enter'&&ev.target.classList.contains('card'))candDlg(ev.target.dataset.id)});
 let drag=null;
 document.addEventListener('dragstart',ev=>{const c=ev.target.closest('.card');if(c){drag=c.dataset.id;ev.dataTransfer.effectAllowed='move';ev.dataTransfer.setData('text/plain',drag)}});
