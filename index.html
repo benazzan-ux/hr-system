@@ -86,8 +86,8 @@ const auth=getAuth(app),db=getFirestore(app);
 
 const ST=['applied','screening','interview','offer','hired','rejected'];
 const L={
-ar:{app:'نظام التوظيف',dash:'لوحة المتابعة',pipe:'مسار المرشحين',jobs:'الوظائف',applied:'تقديم الطلب',screening:'الفرز',interview:'المقابلة',offer:'العرض',hired:'تم التعيين',rejected:'مرفوض',all:'كل الوظائف',addC:'إضافة مرشح',addJ:'إضافة وظيفة',name:'الاسم',job:'الوظيفة',stage:'المرحلة',rating:'التقييم',notes:'ملاحظات الفريق',save:'حفظ',close:'إغلاق',cands:'المرشحون',open:'مفتوحة',closed:'مغلقة',total:'إجمالي المرشحين',openJobs:'وظائف مفتوحة',inProc:'قيد الإجراء',hiredN:'تم تعيينهم',empty:'لا يوجد مرشحون هنا',lang:'English',title:'المسمى الوظيفي',dept:'القسم',status:'الحالة',toggle:'فتح / إغلاق',funnel:'توزيع المرشحين حسب المرحلة',email:'البريد الإلكتروني',pass:'كلمة المرور',in:'تسجيل الدخول',out:'تسجيل الخروج',bad:'تعذر تسجيل الدخول. تأكد من البريد وكلمة المرور.',noAccess:'حسابك غير مفعّل في النظام. اطلب من مدير النظام إضافتك.',loading:'جارٍ التحميل...',admin:'مدير النظام',recruiter:'مسؤول توظيف',manager:'مدير معني',pending:'بانتظار الموافقة',waitMsg:'تم إنشاء حسابك وهو بانتظار موافقة مدير النظام.',team:'الفريق',roleL:'الدور',up:'إنشاء حساب جديد',create:'إنشاء الحساب',firstHint:'أول حساب يُنشأ في النظام يصبح مدير النظام.',gm:'صباح الخير',ga:'مساء الخير',ge:'مساء الخير',welcome:'مرحبًا بك في نظام التوظيف. سجّل دخولك للمتابعة.',exists:'هذا البريد مسجّل مسبقًا.',weak:'كلمة المرور قصيرة، استخدم 6 أحرف على الأقل.',fail:'تعذر الحفظ. ليست لديك صلاحية أو انقطع الاتصال.'},
-en:{app:'Recruitment',dash:'Dashboard',pipe:'Pipeline',jobs:'Jobs',applied:'Applied',screening:'Screening',interview:'Interview',offer:'Offer',hired:'Hired',rejected:'Rejected',all:'All jobs',addC:'Add candidate',addJ:'Add job',name:'Name',job:'Job',stage:'Stage',rating:'Rating',notes:'Team notes',save:'Save',close:'Close',cands:'Candidates',open:'Open',closed:'Closed',total:'Total candidates',openJobs:'Open jobs',inProc:'In process',hiredN:'Hired',empty:'No candidates here',lang:'العربية',title:'Job title',dept:'Department',status:'Status',toggle:'Open / close',funnel:'Candidates by stage',email:'Email',pass:'Password',in:'Sign in',out:'Sign out',bad:'Sign-in failed. Check your email and password.',noAccess:'Your account is not set up yet. Ask an admin to add you.',loading:'Loading...',admin:'Admin',recruiter:'Recruiter',manager:'Hiring manager',pending:'Pending approval',waitMsg:'Your account was created and is waiting for admin approval.',team:'Team',roleL:'Role',up:'Create account',create:'Create account',firstHint:'The first account created becomes the system admin.',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',welcome:'Welcome to the recruitment system. Sign in to continue.',exists:'This email is already registered.',weak:'Password is too short. Use at least 6 characters.',fail:'Could not save. You may lack permission or the connection dropped.'}};
+ar:{app:'نظام التوظيف',dash:'لوحة المتابعة',pipe:'مسار المرشحين',jobs:'الوظائف',applied:'تقديم الطلب',screening:'الفرز',interview:'المقابلة',offer:'العرض',hired:'تم التعيين',rejected:'مرفوض',all:'كل الوظائف',addC:'إضافة مرشح',addJ:'إضافة وظيفة',name:'الاسم',job:'الوظيفة',stage:'المرحلة',rating:'التقييم',notes:'ملاحظات الفريق',save:'حفظ',close:'إغلاق',cands:'المرشحون',open:'مفتوحة',closed:'مغلقة',total:'إجمالي المرشحين',openJobs:'وظائف مفتوحة',inProc:'قيد الإجراء',hiredN:'تم تعيينهم',empty:'لا يوجد مرشحون هنا',lang:'English',title:'المسمى الوظيفي',dept:'القسم',status:'الحالة',toggle:'فتح / إغلاق',funnel:'توزيع المرشحين حسب المرحلة',email:'البريد الإلكتروني',pass:'كلمة المرور',in:'تسجيل الدخول',out:'تسجيل الخروج',bad:'تعذر تسجيل الدخول. تأكد من البريد وكلمة المرور.',noAccess:'حسابك غير مفعّل في النظام. اطلب من مدير النظام إضافتك.',loading:'جارٍ التحميل...',admin:'مدير النظام',recruiter:'مسؤول توظيف',manager:'مدير معني',pending:'بانتظار الموافقة',waitMsg:'تم إنشاء حسابك وهو بانتظار موافقة مدير النظام.',team:'الفريق',roleL:'الدور',up:'إنشاء حساب جديد',create:'إنشاء الحساب',noProv:'طريقة الدخول بالبريد غير مفعّلة في Firebase (Authentication ثم Sign-in method).',firstHint:'أول حساب يُنشأ في النظام يصبح مدير النظام.',gm:'صباح الخير',ga:'مساء الخير',ge:'مساء الخير',welcome:'مرحبًا بك في نظام التوظيف. سجّل دخولك للمتابعة.',exists:'هذا البريد مسجّل مسبقًا.',weak:'كلمة المرور قصيرة، استخدم 6 أحرف على الأقل.',fail:'تعذر الحفظ. ليست لديك صلاحية أو انقطع الاتصال.'},
+en:{app:'Recruitment',dash:'Dashboard',pipe:'Pipeline',jobs:'Jobs',applied:'Applied',screening:'Screening',interview:'Interview',offer:'Offer',hired:'Hired',rejected:'Rejected',all:'All jobs',addC:'Add candidate',addJ:'Add job',name:'Name',job:'Job',stage:'Stage',rating:'Rating',notes:'Team notes',save:'Save',close:'Close',cands:'Candidates',open:'Open',closed:'Closed',total:'Total candidates',openJobs:'Open jobs',inProc:'In process',hiredN:'Hired',empty:'No candidates here',lang:'العربية',title:'Job title',dept:'Department',status:'Status',toggle:'Open / close',funnel:'Candidates by stage',email:'Email',pass:'Password',in:'Sign in',out:'Sign out',bad:'Sign-in failed. Check your email and password.',noAccess:'Your account is not set up yet. Ask an admin to add you.',loading:'Loading...',admin:'Admin',recruiter:'Recruiter',manager:'Hiring manager',pending:'Pending approval',waitMsg:'Your account was created and is waiting for admin approval.',team:'Team',roleL:'Role',up:'Create account',create:'Create account',noProv:'Email sign-in is not enabled in Firebase (Authentication, Sign-in method).',firstHint:'The first account created becomes the system admin.',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',welcome:'Welcome to the recruitment system. Sign in to continue.',exists:'This email is already registered.',weak:'Password is too short. Use at least 6 characters.',fail:'Could not save. You may lack permission or the connection dropped.'}};
 
 let D={lang:'ar',tab:'pipe',jf:'all',jobs:[],cands:[],user:null,role:null,ready:false,msg:'',mode:'in',users:[],signing:false};
 try{const l=localStorage.getItem('hr-lang');if(l)D.lang=l}catch(x){}
@@ -103,11 +103,16 @@ const canEdit=()=>D.role=='admin'||D.role=='recruiter';
 const fail=()=>{D.msg=t('fail');render()};
 
 const STAFF=['admin','recruiter','manager'];
+async function claim(u){
+ const ref=doc(db,'users',u.uid),base={email:u.email,createdAt:serverTimestamp()};
+ try{const b=writeBatch(db);b.set(doc(db,'settings','init'),{by:u.uid,at:serverTimestamp()});b.set(ref,{...base,role:'admin'});await b.commit();return 'admin'}
+ catch(x){try{await setDoc(ref,{...base,role:'pending'});return 'pending'}catch(y){D.msg='['+(y.code||y.message)+']';return 'none'}}
+}
 async function enter(u){
  unsubs.forEach(f=>f());unsubs=[];
  D.user=u;D.role=null;D.jobs=[];D.cands=[];D.users=[];D.msg='';
  if(u){
-  try{const s=await getDoc(doc(db,'users',u.uid));D.role=s.exists()?s.data().role:'none'}catch(x){D.role='none'}
+  try{const s=await getDoc(doc(db,'users',u.uid));D.role=s.exists()?s.data().role:await claim(u)}catch(x){D.role='none';D.msg='['+(x.code||x.message)+']'}
   if(STAFF.includes(D.role)){
    if(D.role=='admin')unsubs.push(onSnapshot(collection(db,'users'),s=>{D.users=s.docs.map(d=>({id:d.id,...d.data()}));render()},()=>{}));
    const onErr=er=>{D.msg=er.message;render()};
@@ -129,7 +134,7 @@ function render(){
  let out;
  if(!D.ready)out=`${hdr(false)}<main>${t('loading')}</main>`;
  else if(!D.user)out=`${hdr(false)}<main><form class="panel login" id="lf"><h2 class="hello">${greet()}</h2><p class="sub">${t('welcome')}</p><div class="seg" role="tablist"><button type="button" role="tab" aria-selected="${D.mode!='up'}" data-act="mode" data-v="in">${t('in')}</button><button type="button" role="tab" aria-selected="${D.mode=='up'}" data-act="mode" data-v="up">${t('up')}</button></div>${D.mode=='up'?`<p class="sub">${t('firstHint')}</p>`:''}<label>${t('email')}<input id="em" type="email" autocomplete="username" required></label><label>${t('pass')}<input id="pw" type="password" autocomplete="current-password" required></label>${D.msg?`<p class="err" role="alert">${e(D.msg)}</p>`:''}<button class="btn pri wide" type="submit">${D.mode=='up'?t('create'):t('in')}</button></form></main>`;
- else if(!STAFF.includes(D.role))out=`${hdr(true)}<main><div class="panel"><p>${D.role=='pending'?t('waitMsg'):t('noAccess')}</p></div></main>`;
+ else if(!STAFF.includes(D.role))out=`${hdr(true)}<main><div class="panel"><p>${D.role=='pending'?t('waitMsg'):t('noAccess')}</p>${D.msg?`<p class="err">${e(D.msg)}</p>`:''}</div></main>`;
  else out=`${hdr(true)}<main>${D.msg?`<div class="panel err" role="alert">${e(D.msg)}</div>`:''}${D.tab=='dash'?dash():D.tab=='jobs'?jobsV():D.tab=='team'&&D.role=='admin'?teamV():pipe()}</main>`;
  $('app').innerHTML=out;
 }
@@ -175,14 +180,12 @@ function jobDlg(){
 document.addEventListener('submit',async ev=>{
  if(ev.target.id!='lf')return;ev.preventDefault();
  const em=$('em').value.trim(),pw=$('pw').value;
- if(D.mode!='up'){try{await signInWithEmailAndPassword(auth,em,pw)}catch(x){D.msg=t('bad');render()}return}
+ if(D.mode!='up'){try{await signInWithEmailAndPassword(auth,em,pw)}catch(x){D.msg=t('bad')+' ['+(x.code||x.message)+']';render()}return}
  D.signing=true;
  try{
-  const c=await createUserWithEmailAndPassword(auth,em,pw),ref=doc(db,'users',c.user.uid),base={email:em,createdAt:serverTimestamp()};
-  try{const b=writeBatch(db);b.set(doc(db,'settings','init'),{by:c.user.uid,at:serverTimestamp()});b.set(ref,{...base,role:'admin'});await b.commit()}
-  catch(x){await setDoc(ref,{...base,role:'pending'})}
+  const c=await createUserWithEmailAndPassword(auth,em,pw);
   D.signing=false;await enter(c.user);
- }catch(x){D.signing=false;D.msg=x.code=='auth/email-already-in-use'?t('exists'):x.code=='auth/weak-password'?t('weak'):t('bad');render()}
+ }catch(x){D.signing=false;D.msg=(x.code=='auth/email-already-in-use'?t('exists'):x.code=='auth/weak-password'?t('weak'):x.code=='auth/operation-not-allowed'?t('noProv'):t('bad'))+' ['+(x.code||x.message)+']';render()}
 });
 document.addEventListener('click',async ev=>{
  const b=ev.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,id=b.dataset.id;
