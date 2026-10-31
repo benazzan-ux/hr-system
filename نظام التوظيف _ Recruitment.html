@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نظام التوظيف | Recruitment</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f5f6f3;--surface:#fff;--ink:#17252a;--mute:#5d6b6f;--line:#dfe3df;--accent:#1f5f5b;--on:#fff;
+--applied:#6b7a8f;--screening:#3b6ea8;--interview:#7a5ab0;--offer:#b7791f;--hired:#2e8b57;--rejected:#a8433a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101719;--surface:#182224;--ink:#e6eceb;--mute:#93a3a5;--line:#2a3739;--accent:#6fc2b8;--on:#0c1415;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101719;--surface:#182224;--ink:#e6eceb;--mute:#93a3a5;--line:#2a3739;--accent:#6fc2b8;--on:#0c1415;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--line)}
+h1{font-size:18px;margin:0;font-weight:600}
+nav{display:flex;gap:4px;flex:1}
+button,select,input,textarea{font:inherit;color:inherit}
+.tab{background:none;border:0;padding:8px 14px;border-radius:8px;cursor:pointer;color:var(--mute)}
+.tab[aria-selected=true]{background:var(--accent);color:var(--on)}
+.btn{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 14px;cursor:pointer}
+.btn.pri{background:var(--accent);color:var(--on);border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding:20px;max-width:1400px;margin:0 auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.bar .sp{flex:1}
+select,input,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;width:100%}
+.bar select{width:auto;min-width:200px}
+.board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.col{flex:0 0 230px;background:color-mix(in srgb,var(--line) 45%,transparent);border-radius:10px;padding:10px;min-height:300px}
+.col.over{outline:2px dashed var(--accent)}
+.col h3{margin:0 0 10px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;border-inline-start:4px solid var(--c);padding-inline-start:8px}
+.col h3 span{color:var(--mute);font-weight:400}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px;cursor:grab}
+.card b{display:block;font-weight:500}
+.card small{color:var(--mute);display:block}
+.star{color:var(--offer);letter-spacing:2px}
+.empty{color:var(--mute);font-size:13px;padding:8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.stat b{font-size:26px;display:block;line-height:1.2}
+.stat span{color:var(--mute)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+.panel h2{font-size:15px;margin:0 0 12px}
+.fun{display:grid;grid-template-columns:110px 1fr 30px;gap:10px;align-items:center;margin-bottom:8px}
+.fun i{display:block;height:14px;border-radius:7px;background:var(--c)}
+.list{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.list th,.list td{padding:10px 14px;text-align:start;border-bottom:1px solid var(--line)}
+.list th{font-weight:500;color:var(--mute)}
+.wrap{overflow-x:auto}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);width:min(460px,92vw);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+label{display:block;margin-bottom:12px;color:var(--mute);font-size:13px}
+label>*{margin-top:4px;color:var(--ink);font-size:15px}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<dialog id="dlg"></dialog>
+<script>
+const ST=['applied','screening','interview','offer','hired','rejected'];
+const L={
+ar:{app:'نظام التوظيف',dash:'لوحة المتابعة',pipe:'مسار المرشحين',jobs:'الوظائف',applied:'تقديم الطلب',screening:'الفرز',interview:'المقابلة',offer:'العرض',hired:'تم التعيين',rejected:'مرفوض',all:'كل الوظائف',addC:'إضافة مرشح',addJ:'إضافة وظيفة',name:'الاسم',job:'الوظيفة',stage:'المرحلة',rating:'التقييم',notes:'ملاحظات الفريق',save:'حفظ',close:'إغلاق',cands:'المرشحون',open:'مفتوحة',closed:'مغلقة',total:'إجمالي المرشحين',openJobs:'وظائف مفتوحة',inProc:'قيد الإجراء',hiredN:'تم تعيينهم',empty:'لا يوجد مرشحون هنا',lang:'English',title:'المسمى الوظيفي',dept:'القسم',status:'الحالة',toggle:'فتح / إغلاق',funnel:'توزيع المرشحين حسب المرحلة',theme:'الوضع'},
+en:{app:'Recruitment',dash:'Dashboard',pipe:'Pipeline',jobs:'Jobs',applied:'Applied',screening:'Screening',interview:'Interview',offer:'Offer',hired:'Hired',rejected:'Rejected',all:'All jobs',addC:'Add candidate',addJ:'Add job',name:'Name',job:'Job',stage:'Stage',rating:'Rating',notes:'Team notes',save:'Save',close:'Close',cands:'Candidates',open:'Open',closed:'Closed',total:'Total candidates',openJobs:'Open jobs',inProc:'In process',hiredN:'Hired',empty:'No candidates here',lang:'العربية',title:'Job title',dept:'Department',status:'Status',toggle:'Open / close',funnel:'Candidates by stage',theme:'Theme'}};
+let D={lang:'ar',tab:'pipe',jf:'all',n:100,
+jobs:[
+{id:1,t:{ar:'مسؤول مبيعات',en:'Sales Executive'},d:{ar:'المبيعات',en:'Sales'},open:true},
+{id:2,t:{ar:'محاسب',en:'Accountant'},d:{ar:'المالية',en:'Finance'},open:true},
+{id:3,t:{ar:'مطور برمجيات',en:'Software Developer'},d:{ar:'التقنية',en:'IT'},open:true},
+{id:4,t:{ar:'أخصائي موارد بشرية',en:'HR Specialist'},d:{ar:'الموارد البشرية',en:'HR'},open:false}],
+cands:[
+{id:1,name:'سارة العتيبي',job:1,stage:'interview',rating:4,notes:''},
+{id:2,name:'Omar Khalid',job:1,stage:'applied',rating:0,notes:''},
+{id:3,name:'خالد المطيري',job:2,stage:'screening',rating:3,notes:''},
+{id:4,name:'Noura Alharbi',job:2,stage:'offer',rating:5,notes:'Strong references.'},
+{id:5,name:'فهد الزهراني',job:3,stage:'applied',rating:0,notes:''},
+{id:6,name:'Lina Hassan',job:3,stage:'interview',rating:4,notes:''},
+{id:7,name:'محمد الغامدي',job:3,stage:'screening',rating:3,notes:''},
+{id:8,name:'ريم الشهري',job:4,stage:'hired',rating:5,notes:''},
+{id:9,name:'Yousef Nasser',job:1,stage:'rejected',rating:2,notes:''},
+{id:10,name:'هند القحطاني',job:2,stage:'applied',rating:0,notes:''}]};
+try{const s=JSON.parse(localStorage.getItem('hr'));if(s&&s.jobs&&s.cands)D=Object.assign(D,s)}catch(x){}
+const save=()=>{try{localStorage.setItem('hr',JSON.stringify(D))}catch(x){}};
+const t=k=>L[D.lang][k]||k;
+const e=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const job=id=>D.jobs.find(j=>j.id==id);
+const jt=id=>{const j=job(id);return j?j.t[D.lang]:''};
+const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+const $=id=>document.getElementById(id);
+
+function render(){
+ document.documentElement.lang=D.lang;document.documentElement.dir=D.lang=='ar'?'rtl':'ltr';
+ const tabs=['dash','pipe','jobs'].map(k=>`<button class="tab" role="tab" aria-selected="${D.tab==k}" data-act="tab" data-v="${k}">${t(k)}</button>`).join('');
+ const view=D.tab=='dash'?dash():D.tab=='jobs'?jobsV():pipe();
+ $('app').innerHTML=`<header><h1>${t('app')}</h1><nav role="tablist">${tabs}</nav><button class="btn" data-act="lang">${t('lang')}</button></header><main>${view}</main>`;
+}
+function pipe(){
+ const list=D.cands.filter(c=>D.jf=='all'||c.job==D.jf);
+ const opts=`<option value="all">${t('all')}</option>`+D.jobs.map(j=>`<option value="${j.id}" ${D.jf==j.id?'selected':''}>${e(j.t[D.lang])}</option>`).join('');
+ const cols=ST.map(s=>{const cs=list.filter(c=>c.stage==s);
+  return `<section class="col" data-s="${s}" style="--c:var(--${s})"><h3>${t(s)}<span>${cs.length}</span></h3>`+
+  (cs.map(c=>`<div class="card" draggable="true" tabindex="0" data-act="edit" data-id="${c.id}"><b>${e(c.name)}</b><small>${e(jt(c.job))}</small><span class="star">${stars(c.rating)}</span></div>`).join('')||`<div class="empty">${t('empty')}</div>`)+`</section>`}).join('');
+ return `<div class="bar"><select id="jf" aria-label="${t('job')}">${opts}</select><span class="sp"></span><button class="btn pri" data-act="newC">${t('addC')}</button></div><div class="board">${cols}</div>`;
+}
+function dash(){
+ const c=D.cands,n=s=>c.filter(x=>x.stage==s).length,max=Math.max(1,...ST.map(n));
+ const proc=c.filter(x=>x.stage!='hired'&&x.stage!='rejected').length;
+ const stat=(v,l)=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`;
+ const fun=ST.map(s=>`<div class="fun" style="--c:var(--${s})"><span>${t(s)}</span><i style="width:${Math.max(3,n(s)/max*100)}%"></i><b>${n(s)}</b></div>`).join('');
+ return `<div class="stats">${stat(c.length,t('total'))}${stat(D.jobs.filter(j=>j.open).length,t('openJobs'))}${stat(proc,t('inProc'))}${stat(n('hired'),t('hiredN'))}</div><div class="panel"><h2>${t('funnel')}</h2>${fun}</div>`;
+}
+function jobsV(){
+ const rows=D.jobs.map(j=>`<tr><td>${e(j.t[D.lang])}</td><td>${e(j.d[D.lang])}</td><td>${D.cands.filter(c=>c.job==j.id).length}</td><td>${j.open?t('open'):t('closed')}</td><td><button class="btn" data-act="tgl" data-id="${j.id}">${t('toggle')}</button></td></tr>`).join('');
+ return `<div class="bar"><span class="sp"></span><button class="btn pri" data-act="newJ">${t('addJ')}</button></div><div class="wrap"><table class="list"><tr><th>${t('title')}</th><th>${t('dept')}</th><th>${t('cands')}</th><th>${t('status')}</th><th></th></tr>${rows}</table></div>`;
+}
+function candDlg(id){
+ const c=id?D.cands.find(x=>x.id==id):{id:0,name:'',job:D.jobs[0].id,stage:'applied',rating:0,notes:''};
+ const jo=D.jobs.map(j=>`<option value="${j.id}" ${c.job==j.id?'selected':''}>${e(j.t[D.lang])}</option>`).join('');
+ const so=ST.map(s=>`<option value="${s}" ${c.stage==s?'selected':''}>${t(s)}</option>`).join('');
+ const ro=[0,1,2,3,4,5].map(r=>`<option value="${r}" ${c.rating==r?'selected':''}>${r?'★'.repeat(r):'-'}</option>`).join('');
+ $('dlg').innerHTML=`<label>${t('name')}<input id="fn" value="${e(c.name)}"></label><label>${t('job')}<select id="fj">${jo}</select></label><label>${t('stage')}<select id="fs">${so}</select></label><label>${t('rating')}<select id="fr">${ro}</select></label><label>${t('notes')}<textarea id="fnote" rows="3">${e(c.notes)}</textarea></label><div class="acts"><button class="btn" data-act="x">${t('close')}</button><button class="btn pri" data-act="saveC" data-id="${c.id}">${t('save')}</button></div>`;
+ $('dlg').showModal();
+}
+function jobDlg(){
+ $('dlg').innerHTML=`<label>${t('title')}<input id="jt"></label><label>${t('dept')}<input id="jd"></label><div class="acts"><button class="btn" data-act="x">${t('close')}</button><button class="btn pri" data-act="saveJ">${t('save')}</button></div>`;
+ $('dlg').showModal();
+}
+document.addEventListener('click',ev=>{
+ const b=ev.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,id=+b.dataset.id;
+ if(a=='tab'){D.tab=b.dataset.v}
+ else if(a=='lang'){D.lang=D.lang=='ar'?'en':'ar'}
+ else if(a=='edit'){return candDlg(id)}
+ else if(a=='newC'){return candDlg(0)}
+ else if(a=='newJ'){return jobDlg()}
+ else if(a=='x'){return $('dlg').close()}
+ else if(a=='tgl'){const j=job(id);j.open=!j.open}
+ else if(a=='saveC'){
+  const nm=$('fn').value.trim();if(!nm){$('fn').focus();return}
+  const o={name:nm,job:+$('fj').value,stage:$('fs').value,rating:+$('fr').value,notes:$('fnote').value};
+  if(id){Object.assign(D.cands.find(x=>x.id==id),o)}else{D.cands.push(Object.assign({id:Date.now()},o))}
+  $('dlg').close()}
+ else if(a=='saveJ'){
+  const v=$('jt').value.trim();if(!v){$('jt').focus();return}
+  const d=$('jd').value.trim()||'-';D.jobs.push({id:Date.now(),t:{ar:v,en:v},d:{ar:d,en:d},open:true});$('dlg').close()}
+ save();render();
+});
+document.addEventListener('change',ev=>{if(ev.target.id=='jf'){D.jf=ev.target.value;save();render()}});
+document.addEventListener('keydown',ev=>{if(ev.key=='Enter'&&ev.target.classList.contains('card'))candDlg(+ev.target.dataset.id)});
+let drag=null;
+document.addEventListener('dragstart',ev=>{const c=ev.target.closest('.card');if(c){drag=+c.dataset.id;ev.dataTransfer.effectAllowed='move';ev.dataTransfer.setData('text/plain',String(drag))}});
+document.addEventListener('dragover',ev=>{const c=ev.target.closest('.col');if(c&&drag){ev.preventDefault();c.classList.add('over')}});
+document.addEventListener('dragleave',ev=>{const c=ev.target.closest('.col');if(c)c.classList.remove('over')});
+document.addEventListener('drop',ev=>{const c=ev.target.closest('.col');if(c&&drag){ev.preventDefault();D.cands.find(x=>x.id==drag).stage=c.dataset.s;drag=null;save();render()}});
+render();
+</script>
+</body>
+</html>
